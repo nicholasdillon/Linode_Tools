@@ -1,0 +1,22 @@
+import requests
+import json
+# Replace with your personal access token
+access_token = 'your-personal-access-token'
+# Get a list of all volumes
+headers = {
+    'Authorization': f'Bearer {access_token}',
+    'Content-Type': 'application/json'
+}
+response = requests.get('https://api.linode.com/v4/volumes', headers=headers)
+volumes = response.json()
+# Filter only the unattached volumes
+unattached_volumes = [volume for volume in volumes['data'] if not volume['linode_id']]
+# Loop through and delete each unattached volume
+for volume in unattached_volumes:
+    volume_id = volume['id']
+    delete_url = f'https://api.linode.com/v4/volumes/{volume_id}'
+    response = requests.delete(delete_url, headers=headers)
+    if response.status_code == 200:
+        print(f'Successfully deleted volume {volume_id}')
+    else:
+        print(f'Failed to delete volume {volume_id}. Response: {response.text}')
