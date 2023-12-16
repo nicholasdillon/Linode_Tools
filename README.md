@@ -1,66 +1,35 @@
-`# Script Explanation
+### Delete All PVC
 
-The provided Python script interacts with the Linode API to manage volumes (storage devices) associated with a Linode account. Here's a detailed breakdown of the script:
+#### Description:
 
-### 1. Import Necessary Libraries:
-```python
-import requests
-import json `
+The "Delete All PVC" script likely performs an operation related to deleting or managing Persistent Volume Claims (PVC) in a Kubernetes or containerized environment. PVCs are typically used to request durable storage resources in container orchestration platforms. This script may interact with the Kubernetes API or another container orchestrator's API to delete all existing PVCs.
 
-### 2\. Set Your Personal Access Token:
+#### Instructions:
 
-Replace `'your-personal-access-token'` with your actual token.
+1.  Dependencies: Check if the script requires any external dependencies or libraries.
+2.  Configuration: Look for any placeholders or configuration variables within the script that may need customization, such as API credentials or specific PVC names.
+3.  Usage: Understand the intended use case and execute the script accordingly. Be cautious, as it may irreversibly delete PVCs.
 
-pythonCopy code
+#### Notes:
 
-`access_token = 'your-personal-access-token'`
+-   Ensure that the script is compatible with the version of the container orchestrator you are using.
+-   Confirm the script's permissions and ensure it has the necessary access to manage PVCs.
 
-### 3\. Prepare the Headers:
+### Reboot All Linodes
 
-These headers are used to authenticate with the Linode API using your access token.
+#### Description:
 
-pythonCopy code
+The "Reboot All Linodes" script likely initiates a reboot operation for all Linodes associated with a Linode account using the Linode API. Linodes are virtual private servers provided by Linode, and a reboot can be triggered for maintenance or troubleshooting purposes. This script may use the Linode API to iterate through all Linodes and send reboot commands.
 
-`headers = {
-    'Authorization': f'Bearer {access_token}',
-    'Content-Type': 'application/json'
-}`
+#### Instructions:
 
-### 4\. Send a GET Request:
+1.  Dependencies: Check if the script requires any external dependencies or libraries.
+2.  Configuration: Replace any placeholder values (e.g., API keys) with your actual credentials.
+3.  Usage: Execute the script to trigger a reboot for all Linodes associated with the specified account.
 
-Retrieve a list of all volumes associated with your Linode account.
+#### Notes:
 
-pythonCopy code
+-   Exercise caution, as initiating reboots can temporarily interrupt services running on the Linodes.
+-   Ensure that the Linode API key used in the script has the necessary permissions to perform reboot operations.
 
-`response = requests.get('https://api.linode.com/v4/volumes', headers=headers)
-volumes = response.json()`
-
-### 5\. Filter Unattached Volumes:
-
-Include only those volumes that are not attached to any Linode (their `linode_id` field is `null`).
-
-pythonCopy code
-
-`unattached_volumes = [volume for volume in volumes['data'] if not volume['linode_id']]`
-
-### 6\. Loop Through and Delete Unattached Volumes:
-
-pythonCopy code
-
-`for volume in unattached_volumes:
-    volume_id = volume['id']
-    delete_url = f'https://api.linode.com/v4/volumes/{volume_id}'
-    response = requests.delete(delete_url, headers=headers)
-    if response.status_code == 200:
-        print(f'Successfully deleted volume {volume_id}')
-    else:
-        print(f'Failed to delete volume {volume_id}. Response: {response.text}')`
-
-Within the loop:
-
--   The `volume_id` of each unattached volume is extracted.
--   A DELETE request is sent to the Linode API to delete the volume.
--   If the response status code is `200`, the deletion was successful and a success message is printed to the console.
--   If the status code is not `200`, the deletion failed and an error message is printed to the console, including the response text from the Linode API.
-
-This script automates the cleanup of unattached volumes to help manage resources within a Linode account.
+Before running either script in a production environment, thoroughly review the code, understand its functionality, and consider testing it in a controlled or non-production setting.
